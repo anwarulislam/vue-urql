@@ -16,10 +16,22 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { useQuery } from "@urql/vue";
+import { onBeforeMount, ref } from "vue";
 
-const books: any = ref([]);
-const isLoading = ref(false);
+const fetchBooksDocument = useQuery({
+  query: `
+      query {
+        books {
+          id
+          name
+        }
+      }
+    `,
+});
+
+const books = ref([]);
+const isLoading = fetchBooksDocument.fetching;
 
 const fetchBooks = async () => {
   isLoading.value = true;
@@ -27,27 +39,16 @@ const fetchBooks = async () => {
   // wait 1 second
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
-  const response = await fetch("http://localhost:4000/", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      query: `
-        query {
-          books {
-            id
-            name
-          }
-        }
-      `,
-    }),
-  });
+  const { value } = await fetchBooksDocument.data;
 
-  const { data } = await response.json();
+  console.log(value);
+
+  books.value = value.books;
 
   isLoading.value = false;
 
-  books.value = data.books;
+  onBeforeMount(() => {});
+
+  // books.value = data.books;
 };
 </script>

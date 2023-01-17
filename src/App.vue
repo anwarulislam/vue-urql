@@ -17,7 +17,7 @@ import { ref } from "vue";
 import ApolloClientContent from "./components/Apollo.vue";
 import UrqlClientContent from "./components/Urql.vue";
 
-const client = ref("apollo");
+const client = ref("urql");
 
 const changeClient = () => {
   client.value = client.value === "apollo" ? "urql" : "apollo";

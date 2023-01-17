@@ -1,0 +1,6 @@
+query FetchBooks {
+  books {
+    id
+    name
+  }
+}
