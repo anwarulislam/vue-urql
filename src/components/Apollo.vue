@@ -1,9 +1,9 @@
 <template>
   <div class="header">
     <h2>Apollo Client</h2>
-    <button @click="fetchBooks">
+    <!-- <button @click="fetchBooks">
       {{ isLoading ? "Loading..." : "Fetch Books" }}
-    </button>
+    </button> -->
   </div>
 
   <div>
@@ -20,33 +20,4 @@ import { ref } from "vue";
 
 const books: any = ref([]);
 const isLoading = ref(false);
-
-const fetchBooks = async () => {
-  isLoading.value = true;
-  // wait 1 second
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-
-  const response = await fetch("http://localhost:4000/", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      query: `
-        query {
-          books {
-            id
-            name
-          }
-        }
-      `,
-    }),
-  });
-
-  const { data } = await response.json();
-
-  isLoading.value = false;
-
-  books.value = data.books;
-};
 </script>

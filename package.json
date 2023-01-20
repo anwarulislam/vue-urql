@@ -10,6 +10,7 @@
     "type-check": "vue-tsc --noEmit"
   },
   "dependencies": {
+    "@graphql-codegen/typescript-vue-urql": "^2.3.6",
     "@urql/vue": "^1.0.4",
     "@vue/apollo-composable": "4.0.0-beta.1",
     "apollo-boost": "^0.4.9",

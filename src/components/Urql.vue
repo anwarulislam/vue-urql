@@ -1,14 +1,15 @@
 <template>
   <div class="header">
     <h2>URQL Books</h2>
-    <button @click="fetchBooks">
+    <!-- <button @click="fetchBooks">
       {{ isLoading ? "Loading..." : "Fetch Books" }}
-    </button>
+    </button> -->
   </div>
 
+  <h1 v-if="fetching">Loading...</h1>
   <div>
     <ul>
-      <li v-for="book in books" :key="book.id">
+      <li v-for="book in data.books" :key="book.id">
         {{ book.name }}
       </li>
     </ul>
@@ -19,7 +20,7 @@
 import { useQuery } from "@urql/vue";
 import { onBeforeMount, ref } from "vue";
 
-const fetchBooksDocument = useQuery({
+const { fetching, data } = useQuery({
   query: `
       query {
         books {
@@ -29,26 +30,4 @@ const fetchBooksDocument = useQuery({
       }
     `,
 });
-
-const books = ref([]);
-const isLoading = fetchBooksDocument.fetching;
-
-const fetchBooks = async () => {
-  isLoading.value = true;
-
-  // wait 1 second
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-
-  const { value } = await fetchBooksDocument.data;
-
-  console.log(value);
-
-  books.value = value.books;
-
-  isLoading.value = false;
-
-  onBeforeMount(() => {});
-
-  // books.value = data.books;
-};
 </script>
