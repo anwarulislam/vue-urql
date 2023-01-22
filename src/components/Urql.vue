@@ -9,25 +9,34 @@
   <h1 v-if="fetching">Loading...</h1>
   <div>
     <ul>
-      <li v-for="book in data.books" :key="book.id">
-        {{ book.name }}
+      <li v-for="book in data?.books" :key="book.id">
+        {{ book.author }}
       </li>
     </ul>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { useQuery } from "@urql/vue";
-import { onBeforeMount, ref } from "vue";
+import { gql, useQuery } from "@urql/vue";
+import { computed, onBeforeMount, ref, watch } from "vue";
+import { FetchBooksDocument } from "../gql/graphql";
+
+const query = gql`
+  query FetchBooks {
+    books {
+      id
+      name
+      author
+    }
+  }
+`;
+
+type Book = {
+  id: string;
+  name: string;
+};
 
 const { fetching, data } = useQuery({
-  query: `
-      query {
-        books {
-          id
-          name
-        }
-      }
-    `,
+  query: FetchBooksDocument,
 });
 </script>
